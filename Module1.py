@@ -12,9 +12,12 @@ This code takes XML output from GATE (), enriches it with data from the
 questionnaire that Larson administered to students, produces clean texts of
 sections of the student documents after removing citations, etc.
 
+The resulting XML files can be used to create corpora for processing by NLTK,
+which is work begun in Module2.
+
 NOTE: As ofr April 5, 2016, this code fails to perform on a small number (7)
 of the 200 or so texts put through it. Performance/responses are explained in
-Evernote note available to the project team. The console output for this
+Evernote note available to the project team. The log file for this
 program makes it possible to see where the problems are, and they can be
 corrected manually before the next phase.
 
