@@ -15,7 +15,7 @@ sections of the student documents after removing citations, etc.
 The resulting XML files can be used to create corpora for processing by NLTK,
 which is work begun in Module2.
 
-NOTE: As ofr April 5, 2016, this code fails to perform on a small number (7)
+NOTE: As of April 5, 2016, this code fails to perform on a small number (7)
 of the 200 or so texts put through it. Performance/responses are explained in
 Evernote note available to the project team. The log file for this
 program makes it possible to see where the problems are, and they can be
@@ -29,16 +29,13 @@ corrected manually before the next phase.
 
 from __future__ import division
 import sys
-sys.path.append('/users/Pranov/Documents/Research/2.7/') #Pranov: Is this needed?
 
-#import numpy #BNL delete this line as Pranov did not need it?
 import re #re is for regular expressions
 import pprint #pretty print for formatting xml output to be more human-readable
 import matplotlib
 import pylab
 import nltk
 from lxml import etree
-#import xml.etree.ElementTree as etree #BNL: Ask Pranov if we should delete.
 import os
 import csv
 import shutil
@@ -63,10 +60,7 @@ parser = etree.XMLParser(remove_blank_text=True, encoding='UTF-8')
 #and users should be sure that the directories exist and are empty before running
 #the code.
 
-#sys.setdefaultencoding('utf8') #BNL ask Pranov about deleting. Looks like it doesn't work in Py3.x
-
 gate_source = "XMLoutfromGATE/"
-#Pranov: We should edit to allow user to navigate to working root with GUI.
 print ("\n \n \nYou must enter a directory path for a directory that contains ")
 print ("a folder called " + gate_source + " with XML data files from GATE.")
 print ("Be sure to include the / at the end of the path! \n \n")
@@ -80,8 +74,6 @@ start_wd = home_dir + gate_source
 defective_xml_out = home_dir + "DefectiveXMLfromGATE/"
 #The next folder is where the output of this code is placed.
 xml_output_dir = home_dir + "XMLOutfromPython/"
-#BNL ask Pranov if we can delete The next line.
-end_wd = "/Users/brianlarson/ProjectsLocal/160405TestOfPython2OnMacBookAir/"
 #The next line sets the file where the CSV data from the Excel export is. Obviously,
 #the named file has to be in home_dir
 csv_file = home_dir + 'MasterDataForXML.csv'
@@ -97,7 +89,7 @@ csv_file = home_dir + 'MasterDataForXML.csv'
 logging_file = home_dir + 'Module1' + " " + str(now + ".log")
 logging.basicConfig(filename=logging_file, filemode='w', level=logging.DEBUG)
 #To log to a file, add these parameters to previous basicConfig:
-# filename=home_dir+'Module1.log', filemode='w',
+# filename=logging_file, filemode='w',
 #To log to the console, delete the parameters in the previous line.
 
 #This code records some basic run information
@@ -125,7 +117,8 @@ logging.debug(" sought_papers identified: " + str(sought_papers))
 lg_segments_out = ["Caption", "TOCTOA", "OtherFormal"]
 logging.debug(" Large segments excluded: " + str(lg_segments_out))
 
-#BNL ask Pranov about moving sm_segments_out here from below.
+sm_segments_out = ["Heading", "Footnote", "Cite", "Blockquote"]
+logging.debug(" Small segments excluded: " + str(sm_segments_out))
 
 #The next two variables ID the annotation sets that are possible based on who
 #the annotators were. These are the initials of the human annotators who did
@@ -234,8 +227,7 @@ def verify_annotation(docroot, paper_name):
 def extract_original_text(gatefile):
     logging.debug(" Running extract_original_text on " + gatefile)
     gatefile = start_wd + gatefile
-    f = codecs.open(gatefile, encoding="utf-8")     #BNL ask Pranov whether we
-                                                    #actually need this for Py3.x
+    f = codecs.open(gatefile, encoding="utf-8")
     original = f.read()
     re_s = re.compile('<TextWithNodes>.*</TextWithNodes>', re.DOTALL)
     #In previous line, re.DOTALL option causes a '.' to match any character,
@@ -462,9 +454,6 @@ for orig_gate_doc_name in os.listdir(name_path):
                 #They prefer the annotation set ascribed to as1, otherwise use as2.
                 ###
                 gate_ann_set = get_annotation_set(xml_root)
-                sm_segments_out = ["Heading", "Footnote", "Cite", "Blockquote"]
-                #List of small segments to be cleansed.
-                #BNL Ask Pranov about moving previous line to run-time variables above. Why set for each paper?
 
                 orig_w_nodes = (delete_segments(orig_w_nodes, xml_root,
                     gate_ann_set, lg_segments_out, sm_segments_out))
@@ -504,6 +493,3 @@ for orig_gate_doc_name in os.listdir(name_path):
                 #Finally, we write the revised XML file out.
                 xml_doc.write(rev_gate_doc_name, pretty_print = True,
                                 xml_declaration=True, encoding='UTF-8')
-
-##POST-LOOP
-os.chdir(end_wd) #Ask Pranov whether we need to keep this.
