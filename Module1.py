@@ -2,7 +2,7 @@
 GenderGenreMod1
 Copyright 2016 Brian N. Larson and licensors
 
-GENDER/GENRE PROJECT CODE: Module I
+GENDER/GENRE PROJECT CODE: Module 1
 This code is the first of four segments used to generate the data for the article
 "Gender/Genre: The lack of gendered stylistic differences in texts requiring
 genre knowledge," published in Volume ___, Issue ___ of the journal _Written
@@ -117,6 +117,10 @@ logging.debug(" sought_papers identified: " + str(sought_papers))
 lg_segments_out = ["Caption", "TOCTOA", "OtherFormal"]
 logging.debug(" Large segments excluded: " + str(lg_segments_out))
 
+#Small segments excluded from processing
+#The files in GATE are manually annotated to delimit several small segment types.
+#The next variable identifies the small segment types that are excluded from
+#processing in this module.
 sm_segments_out = ["Heading", "Footnote", "Cite", "Blockquote"]
 logging.debug(" Small segments excluded: " + str(sm_segments_out))
 
