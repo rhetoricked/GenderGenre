@@ -31,9 +31,14 @@ from nltk.tokenize import sent_tokenize
 from nltk.tokenize import TreebankWordTokenizer
 tokenizer = TreebankWordTokenizer()
 
+#5-1 Need to replace this with code from previous modules to set working
+#directories.
 run_root = "/Users/Pranov/Documents/Research/2.7/"
 functword_file = run_root + "Functwords.txt"
 tags_file = run_root + "PennTagset.txt"
+#5-1 Pranov suggests putting functowrds and tags_file files in the Github both for
+#Python 3 and Python 2.7 versions, so folks have the files I used.
+
 xml_dir = run_root + "XMLOutfromPython/"
 pickle_dir = run_root + "NLTKCorporaUncatUntag/Pickles/"
 
@@ -45,14 +50,14 @@ def process(section):
         nltkcorpus_dir = run_root + "NLTKCorporaUncatUntag/" + section + "/"
         trigramspickle = pickle_dir + section + "trigram.pickle"
         bigramspickle = pickle_dir + section + "bigram.pickle"
-        logging_file = nltkcorpus_dir + "4Log.log"
+        logging_file = nltkcorpus_dir + "4Log.log" #5-1 moved out to global or deleted.
         results_file = pickle_dir + section + "FeaturesPrefixes.pickle"
-        sought_papers = ["1007", "2021", "2013", "1116"] #For more, add , "2013", "1116"
+        sought_papers = ["1007", "2021", "2013", "1116"] #For more, add , "2013", "1116" #5-1 Moved out to global
 
         #The following lines load (from pickled files) the aggregate bigrams and trigrams, then trimmed to the top 100 and 500, as well as
         #the lists of function words and POS tags.
-        corpustrigrams = pickle.load( open (trigramspickle, "rb"))
-        corpusbigrams = pickle.load( open (bigramspickle, "rb"))
+        corpustrigrams = pickle.load( open (trigramspickle, "rb")) #5-1 Replace with a with statement.
+        corpusbigrams = pickle.load( open (bigramspickle, "rb")) #5-1 Replace with a with statement.
         freqtrigrams = corpustrigrams[:500]
         freqbigrams = corpusbigrams[:100]
         print("Frequent bigrams used as features... Length = " + str(len(freqbigrams)))
@@ -60,6 +65,7 @@ def process(section):
         print("Frequent trigrams used as featuresLength = " + str(len(freqtrigrams)))
         print(freqtrigrams)
 
+        #5-1 Move the next few lines out to global up to ##XXX
         with open(functword_file, encoding = "utf-8") as f:
             functwords = f.read().splitlines()
         print("Number of function words = " + str(len(functwords)))
@@ -75,10 +81,12 @@ def process(section):
         print "POS tags:"
         print postags
         '''
+        ##XXX
+
         #papers will be a list of dictionaries. Each dictionary will have the features for one paper.
         papers = [ ]
 
-        def getgender(paper_num):
+        def getgender(paper_num): #Move this function outside the process function.
                 print(paper_num + " GET GENDER")
                 print("\n_____")
                 #Go into the XML document to get the gender.
@@ -246,7 +254,7 @@ def process(section):
 
                 papers.append(paper_dict)
 
-        pickle.dump(papers, open (results_file, "wb"))
+        pickle.dump(papers, open (results_file, "wb")) #5-1 Replace with a with statement.
 
         #sys.stdout = stdout
 
